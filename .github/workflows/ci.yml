@@ -9,17 +9,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-    - name: Install dependencies
-      run: npm install
-      env:
-        NODE_ENV: development
+      - name: Clean install (force rebuild)
+        run: rm -rf node_modules package-lock.json && npm install
+        env:
+          NODE_ENV: development
 
-    - name: Run tests
-      run: npm test
+      - name: Show installed Jest version
+        run: npx jest --version
+
+      - name: Run tests
+        run: npx jest
